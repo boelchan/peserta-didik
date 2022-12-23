@@ -8,6 +8,14 @@
         ]
     },
     {
+        "title": "Santri",
+        "icon": "user",
+        "route": "santri.index",
+        "role": [
+            "superadmin", "operator"
+        ]
+    },
+    {
         "title": "Sistem",
         "icon": "settings",
         "role": [
