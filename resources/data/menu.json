@@ -1,0 +1,26 @@
+[
+    {
+        "title": "Home",
+        "icon": "home",
+        "route": "home",
+        "role": [
+            "superadmin"
+        ]
+    },
+    {
+        "title": "Sistem",
+        "icon": "settings",
+        "role": [
+            "superadmin"
+        ],
+        "sub": [
+            {
+                "title": "User",
+                "route": "user.index",
+                "role": [
+                    "superadmin"
+                ]
+            }
+        ]
+    }
+]
