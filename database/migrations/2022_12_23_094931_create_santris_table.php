@@ -18,7 +18,11 @@ return new class extends Migration
             $table->string('nik', 20);
             $table->string('nama', 50);
             $table->string('alamat', 250);
+            $table->string('ktp', 250)->nullable();
+            $table->string('kk', 250)->nullable();
+            $table->string('akte_kelahiran', 250)->nullable();
             $table->date('tanggal_lahir')->nullable();
+            $table->char('status', 10)->default('aktif');
             $table->timestamps();
         });
     }
