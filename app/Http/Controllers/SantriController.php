@@ -33,26 +33,44 @@ class SantriController extends Controller
             'alamat' => 'required',
         ]);
 
-        Santri::create([
+        $santri = Santri::create([
             'nik' => $request->nik,
             'nama' => $request->nama,
             'alamat' => $request->alamat,
             'tanggal_lahir' => $request->tanggal_lahir,
         ]);
 
+        if ($request->file('kk')) {
+            $file_berkas = $request->file('kk');
+            $kk = 'kk-' . $santri->id . '-' . microtime() . '.' . $file_berkas->extension();
+            $file_berkas->move('storage/kk/', $kk);
+
+            $santri->kk = $kk;
+            $santri->save();
+        }
+        if ($request->file('akta_kelahiran')) {
+            $file_berkas = $request->file('akta_kelahiran');
+            $akta_kelahiran = 'akta_kelahiran-' . $santri->id . '-' . microtime() . '.' . $file_berkas->extension();
+            $file_berkas->move('storage/akta_kelahiran/', $akta_kelahiran);
+
+            $santri->akta_kelahiran = $akta_kelahiran;
+            $santri->save();
+        }
+
+
         return redirect()->route('santri.index');
     }
 
     public function show(Santri $santri)
     {
-        $breadcrumbs = [['url' => route('santri.index'), 'title' => 'Santri'], ['title' => 'Detail '.$santri->nama]];
+        $breadcrumbs = [['url' => route('santri.index'), 'title' => 'Santri'], ['title' => 'Detail ' . $santri->nama]];
 
         return view('santri.show', compact('user', 'breadcrumbs'));
     }
 
     public function edit(Santri $santri)
     {
-        $breadcrumbs = [['url' => route('santri.index'), 'title' => 'Santri'], ['title' => 'Edit '.$santri->nama]];
+        $breadcrumbs = [['url' => route('santri.index'), 'title' => 'Santri'], ['title' => 'Edit ' . $santri->nama]];
 
         return view('santri.edit', compact('santri', 'breadcrumbs'));
     }
@@ -60,12 +78,33 @@ class SantriController extends Controller
     public function update(Request $request, Santri $santri)
     {
         $validated = $request->validate([
-            'nik' => 'required|unique:santris,nik,'.$santri->id,
+            'nik' => 'required|unique:santris,nik,' . $santri->id,
             'nama' => 'required|max:50',
             'alamat' => 'required',
         ]);
 
-        $santri->update($validated);
+        if ($request->file('kk')) {
+            $file_berkas = $request->file('kk');
+            $kk = 'kk-' . $santri->id . '-' . microtime() . '.' . $file_berkas->extension();
+            $file_berkas->move('storage/kk/', $kk);
+
+            $santri->kk = $kk;
+            $santri->save();
+        }
+        if ($request->file('akta_kelahiran')) {
+            $file_berkas = $request->file('akta_kelahiran');
+            $akta_kelahiran = 'akta_kelahiran-' . $santri->id . '-' . microtime() . '.' . $file_berkas->extension();
+            $file_berkas->move('storage/akta_kelahiran/', $akta_kelahiran);
+
+            $santri->akta_kelahiran = $akta_kelahiran;
+            $santri->save();
+        }
+
+        $santri->nik = $request->nik;
+        $santri->nama = $request->nama;
+        $santri->alamat = $request->alamat;
+        $santri->tanggal_lahir = $request->tanggal_lahir;
+        $santri->save();
 
         return redirect()->route('santri.index');
     }
@@ -78,5 +117,4 @@ class SantriController extends Controller
 
         return response()->json(['message' => 'Data sedang digunakan'], 400);
     }
-
 }
